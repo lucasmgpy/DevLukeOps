@@ -30,3 +30,5 @@ Criar uma plataforma que provisiona infraestrutura no Azure, implanta uma aplica
 
 ## Status
 Em construção - acompanhe o progresso nas branches `main` e `dev`!
+
+## Lucas Gesso
