@@ -1,0 +1,45 @@
+name: Docker Build and Test
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker images
+        run: |
+          docker-compose build
+
+      - name: Test Docker containers
+        run: |
+          docker-compose up -d
+          sleep 10  # Aguarda os serviços iniciarem
+          curl -f http://localhost:5110 || exit 1
+          curl -f http://localhost:9090 || exit 1
+          curl -f http://localhost:3000 || exit 1
+          docker-compose down
+
+      - name: Login to Docker Hub (opcional, para push)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker images (opcional)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        run: |
+          docker-compose push
