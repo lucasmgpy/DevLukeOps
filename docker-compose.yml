@@ -1,19 +1,22 @@
 services:
   prometheus:
+    image: lucasmg/devlukeops-prometheus:latest
     build:
       context: ./monitoring/prometheus
       dockerfile: Dockerfile
     ports:
-      - "9090:9090"
+      - "9091:9090"
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
   grafana:
+    image: lucasmg/devlukeops-grafana:latest
     build:
       context: ./monitoring/grafana
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
   app:
+    image: lucasmg/devlukeops-app:latest
     build:
       context: ./app
       dockerfile: Dockerfile
