@@ -21,16 +21,16 @@ jobs:
 
       - name: Build Docker images
         run: |
-          docker-compose build
+          docker compose build
 
       - name: Test Docker containers
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 10  # Aguarda os serviços iniciarem
           curl -f http://localhost:5110 || exit 1
           curl -f http://localhost:9090 || exit 1
           curl -f http://localhost:3000 || exit 1
-          docker-compose down
+          docker compose down
 
       - name: Login to Docker Hub (opcional, para push)
         if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
