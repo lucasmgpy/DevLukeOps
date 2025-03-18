@@ -1,2 +1,1 @@
 FROM grafana/grafana:latest
-
