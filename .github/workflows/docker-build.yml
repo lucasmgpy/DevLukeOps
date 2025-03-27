@@ -43,26 +43,3 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         run: |
           docker compose push
-  
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-
-    steps:
-      - name: Debug Connectivity
-        run: |
-          echo "Tentando conectar a ${{ secrets.VM_HOST }}:2222"
-          nc -zv ${{ secrets.VM_HOST }} 2222 || echo "Conexão falhou"
-
-      - name: Deploy to VM
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: lucas
-          port: 2222
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /projetos/DevLukeOps
-            docker-compose pull
-            docker-compose up -d
