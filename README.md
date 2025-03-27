@@ -39,8 +39,10 @@ Este projeto demonstra habilidades em DevOps com uma infraestrutura no Azure, ut
 ## Instruções
 1. Clone o repositório: `git clone git@github.com:lucasgesso/DevLukeOps.git`.
 2. Navegue para o diretório: `cd DevLukeOps`.
-3. Inicie os serviços: `docker compose up -d`.
-4. Acesse os serviços conforme os endereços acima(adaptando ao ip da sua maquina, ou maquina virtual. https://localhost:xxxx também funciona).
+5. Adicione o usuário ao grupo docker: `sudo usermod -aG docker $USER` e faça logout/login.
+4. Inicie os serviços: `docker compose up -d`.
+5. Acesse os serviços conforme os endereços acima(adaptando ao ip da sua maquina, ou maquina virtual. https://localhost:xxxx também funciona).
+
 
 ## Notas
 - Ajuste no `prometheus.yml` de `host.docker.internal:5110` para `app:5110` resolveu problemas de rede na VM.
