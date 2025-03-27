@@ -8,6 +8,7 @@ services:
       - "9091:9090"
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus  # Volume para dados do Prometheus
   grafana:
     image: lucasmgpy/devlukeops-grafana:latest
     build:
@@ -15,6 +16,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana  # Volume para dados do Grafana
   app:
     image: lucasmgpy/devlukeops-app:latest
     build:
@@ -22,3 +25,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5110:5110"
+
+volumes:
+  prometheus-data:
+  grafana-data:
