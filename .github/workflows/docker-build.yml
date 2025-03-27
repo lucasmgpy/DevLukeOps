@@ -50,6 +50,11 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
 
     steps:
+      - name: Debug Connectivity
+	run: |
+	  echo "Tentando conectar a ${{ secrets.Vm_HOST }}:2222"
+	  nc -zv ${{ secrets.VM_HOST }} 2222 || echo "Conexão falhou"
+
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
         with:
