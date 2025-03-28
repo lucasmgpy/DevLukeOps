@@ -1,6 +1,5 @@
-from flask import Flask
+from flask import Flask, Response
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
-from flask import Response
 import sqlite3
 
 app = Flask(__name__)
@@ -31,6 +30,7 @@ def api():
     result = cursor.execute('SELECT count FROM visits WHERE id = 1').fetchone()
     conn.commit()
     conn.close()
+    # Retorna uma página HTML com a contagem e um botão de reset
     return f"""
     <html>
         <body>
@@ -45,12 +45,14 @@ def api():
 # Rota para reiniciar a contagem
 @app.route('/reset', methods=['POST'])
 def reset():
+    # Zera o contador do banco SQLite
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('UPDATE visits SET count = 0 WHERE id = 1')
     conn.commit()
     conn.close()
-    REQUEST_COUNT.set(0) #reseta a contagem no /metrics
+    # Zera o contador do Prometheus
+    REQUEST_COUNT.set(0)
     return "Contagem reiniciada! <a href='/api'>Voltar</a>"
 
 # Rota para métricas do Prometheus
@@ -60,3 +62,4 @@ def metrics():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5110)
+    
