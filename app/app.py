@@ -31,7 +31,26 @@ def api():
     result = cursor.execute('SELECT count FROM visits WHERE id = 1').fetchone()
     conn.commit()
     conn.close()
-    return f"Visitas: {result['count']}"
+    return f"""
+    <html>
+        <body>
+            <h1>Visitas: {result['count']}</h1>
+            <form action="/reset" method="post">
+                <button type="submit">Reiniciar Contagem</button>
+            </form>
+        </body>
+    </html>
+    """
+
+# Rota para reiniciar a contagem
+@app.route('/reset', methods=['POST'])
+def reset():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE visits SET count = 0 WHERE id = 1')
+    conn.commit()
+    conn.close()
+    return "Contagem reiniciada! <a href='/api'>Voltar</a>"
 
 # Rota para métricas do Prometheus
 @app.route('/metrics')

@@ -25,7 +25,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5110:5110"
+    volumes:
+      - app-data:/app  # Volume para persistir o banco de dados SQLite
 
 volumes:
   prometheus-data:
   grafana-data:
+  app-data:
