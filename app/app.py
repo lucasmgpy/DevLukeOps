@@ -50,6 +50,7 @@ def reset():
     cursor.execute('UPDATE visits SET count = 0 WHERE id = 1')
     conn.commit()
     conn.close()
+    REQUEST_COUNT.set(0) #reseta a contagem no /metrics
     return "Contagem reiniciada! <a href='/api'>Voltar</a>"
 
 # Rota para métricas do Prometheus
